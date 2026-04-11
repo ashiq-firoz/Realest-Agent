@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+langchain
+langchain-google-genai
+langchain-community
+langchain-openai
+langchain-anthropic
+langgraph
+tavily-python
+requests
+pandas
+numpy
+google-generativeai
