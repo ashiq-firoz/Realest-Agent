@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.hypothesis
+.env
+.env.*
+*.egg-info
+.mypy_cache
+tests

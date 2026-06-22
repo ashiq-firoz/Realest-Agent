@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cotality Intelligence — Property Report</title>
+  <style>
+    /* ── Base ─────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #ffffff;
+    }
+
+    /* ── Branding header ─────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #ffffff;
+      padding: 32px 48px 28px;
+      margin-bottom: 40px;
+    }
+
+    .header .brand {
+      font-size: 22pt;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header .brand span {
+      color: #e94560;
+    }
+
+    .header .subtitle {
+      font-size: 11pt;
+      color: #a0aec0;
+      margin-top: 4px;
+    }
+
+    .header .report-meta {
+      margin-top: 20px;
+      font-size: 14pt;
+      font-weight: 600;
+    }
+
+    .header .report-date {
+      font-size: 9pt;
+      color: #a0aec0;
+      margin-top: 4px;
+    }
+
+    /* ── Page body ───────────────────────────────────── */
+    .content {
+      padding: 0 48px 48px;
+    }
+
+    /* ── Metrics bar ─────────────────────────────────── */
+    .metrics-bar {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: #f7f9fc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .metric {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .metric-label {
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    /* ── Report sections ─────────────────────────────── */
+    .section {
+      margin-bottom: 36px;
+      page-break-inside: avoid;
+    }
+
+    .section h2 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #1a1a2e;
+      border-bottom: 2px solid #e94560;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .section p {
+      margin-bottom: 10px;
+    }
+
+    .section ul, .section ol {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .section li {
+      margin-bottom: 4px;
+    }
+
+    /* ── Footer ──────────────────────────────────────── */
+    .footer {
+      margin-top: 48px;
+      padding: 20px 48px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 8pt;
+      color: #a0aec0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ── Print / PDF overrides ────────────────────────── */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      .header { break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Branding header ─────────────────────────────── -->
+  <div class="header">
+    <div class="brand">Cotality<span>Intelligence</span></div>
+    <div class="subtitle">Australian Property Market Intelligence Platform</div>
+    <div class="report-meta">{{ location_display_name }}</div>
+    <div class="report-date">Generated {{ created_at }}  ·  Report ID: {{ report_id }}</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── Key metrics ──────────────────────────────── -->
+    <div class="metrics-bar">
+      <div class="metric">
+        <div class="metric-label">Median Price</div>
+        <div class="metric-value">{{ median_price or "—" }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Price Appreciation</div>
+        <div class="metric-value">{{ price_appreciation or "—" }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Rental Yield</div>
+        <div class="metric-value">{{ rental_yield or "—" }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Days on Market</div>
+        <div class="metric-value">{{ days_on_market or "—" }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">ROI Estimate</div>
+        <div class="metric-value">{{ roi_estimate or "—" }}</div>
+      </div>
+    </div>
+
+    <!-- ── Report sections ──────────────────────────── -->
+    <div class="section">
+      <h2>Market Overview</h2>
+      <div>{{ market_overview | safe }}</div>
+    </div>
+
+    <div class="section">
+      <h2>Neighbourhood Insights</h2>
+      <div>{{ neighbourhood_insights | safe }}</div>
+    </div>
+
+    <div class="section">
+      <h2>Demographics</h2>
+      <div>{{ demographics_section | safe }}</div>
+    </div>
+
+    <div class="section">
+      <h2>Investment Intelligence</h2>
+      <div>{{ investment_intelligence | safe }}</div>
+    </div>
+
+    <div class="section">
+      <h2>Comparable Properties</h2>
+      <div>{{ comparable_properties_html | safe }}</div>
+    </div>
+
+    <div class="section">
+      <h2>AI Summary</h2>
+      <div>{{ ai_summary | safe }}</div>
+    </div>
+
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <div class="footer">
+    <span>© Cotality Intelligence — For informational purposes only. Not financial advice.</span>
+    <span>{{ created_at }}</span>
+  </div>
+
+</body>
+</html>

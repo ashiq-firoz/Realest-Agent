@@ -1,0 +1,10 @@
+node_modules
+.next
+.env
+.env.*
+npm-debug.log*
+.eslintcache
+*.tsbuildinfo
+coverage
+.vitest
+vitest.config.ts
