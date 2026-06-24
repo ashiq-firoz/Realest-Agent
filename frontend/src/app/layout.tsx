@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Newsreader } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Building2 } from "lucide-react";
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
 
 import { Providers } from "./providers";
 import { AuthNav } from "@/components/auth-nav";
 
 export const metadata: Metadata = {
-  title: "Cotality Intelligence | AI Real Estate",
-  description: "AI-Powered Real Estate Intelligence Platform",
+  title: "Estately AI | Market Intelligence",
+  description: "AI-Powered Real Estate Market Intelligence Platform — Generate professional-grade market reports instantly.",
 };
 
 export default function RootLayout({
@@ -21,14 +30,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
-      <body className="min-h-screen bg-slate-50 antialiased dark:bg-slate-950 flex flex-col text-slate-900 dark:text-slate-50">
+    <html lang="en" className={cn("font-sans", jakarta.variable, newsreader.variable)}>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen bg-background antialiased flex flex-col text-on-surface">
         <Providers>
-          <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white/80 backdrop-blur-md dark:bg-slate-950/80 dark:border-slate-800">
-            <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-              <Link href="/" className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xl tracking-tight transition-transform hover:scale-105">
-                <Building2 className="w-6 h-6" />
-                <span>Cotality Intelligence</span>
+          <header className="sticky top-0 z-50 w-full bg-surface/95 backdrop-blur-md border-b border-outline-variant">
+            <div className="container mx-auto px-container-margin h-16 flex items-center justify-between">
+              <Link href="/" className="flex items-center gap-2 text-primary font-bold text-headline-md font-headline-md tracking-tight transition-transform hover:scale-105">
+                <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+                <span>Estately AI</span>
               </Link>
               <AuthNav />
             </div>

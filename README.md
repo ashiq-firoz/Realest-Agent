@@ -1,4 +1,9 @@
-# Cotality Intelligence
+# Estately AI
+
+- (This app have two modes - traditional dashboard and Full Agent Mode. In Full Agent Mode it act as a real estate agent and provide reports to clients.)
+- In full agent mode its just a chat interface where user can ask for details reports any query.
+- Also chat exists in the dashboard version too
+- In full agent mode there is a side bar to navigate to reports and analysis sections.
 
 A full-stack, AI-driven real estate intelligence platform generating comprehensive market reports for the Australian market.
 

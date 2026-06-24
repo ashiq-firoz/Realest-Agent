@@ -32,3 +32,4 @@ class User(Base):
     reports: Mapped[List["Report"]] = relationship(back_populates="user")
     saved_locations: Mapped[List["SavedLocation"]] = relationship(back_populates="user")
     watchlist_entries: Mapped[List["WatchlistEntry"]] = relationship(back_populates="user")
+    agent_chats: Mapped[List["AgentChat"]] = relationship(back_populates="user", cascade="all, delete-orphan")

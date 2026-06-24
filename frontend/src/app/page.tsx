@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -11,8 +10,6 @@ export default function Home() {
   const { status } = useSession();
 
   const handleAnalyze = () => {
-    // Signed-in users go straight to the report flow; otherwise send them to
-    // login first, returning to the report flow afterwards.
     if (status === "authenticated") {
       router.push("/report/new");
     } else {
@@ -21,81 +18,132 @@ export default function Home() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-4 relative overflow-hidden bg-slate-50 dark:bg-slate-950">
-      {/* Decorative background gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/20 blur-[120px] pointer-events-none" />
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="max-w-3xl w-full text-center space-y-8 z-10"
-      >
-        <div className="space-y-4">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 text-sm font-medium mb-4"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-            </span>
-            AI-Powered Real Estate Intelligence
-          </motion.div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            Instant Insights for <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">
-              Smarter Decisions
-            </span>
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Generate professional-grade market reports instantly. Analyze trends, pricing, demographics, and investment potential with Gemini AI.
-          </p>
-        </div>
-
-        <motion.div
+    <div className="flex-1 flex flex-col bg-background overflow-hidden">
+      <div className="max-w-5xl mx-auto w-full px-container-margin">
+        {/* Hero Section */}
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="mt-12 flex justify-center"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="py-xl flex flex-col gap-md"
         >
-          <Button
-            size="lg"
-            onClick={handleAnalyze}
-            className="h-14 px-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg transition-all shadow-lg shadow-indigo-500/20"
-          >
-            Analyze Market
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </motion.div>
+          <div className="flex flex-col gap-xs">
+            <span className="text-label-md font-label-md text-tertiary uppercase tracking-widest">
+              AI Market Intelligence
+            </span>
+            <h1 className="text-display-lg font-display-lg text-on-surface leading-tight">
+              Instant Insights for{" "}
+              <span className="text-primary">Smarter Decisions</span>
+            </h1>
+          </div>
+          <p className="text-body-lg font-body-lg text-on-surface-variant max-w-xl">
+            Generate professional-grade market reports instantly. Analyze trends,
+            pricing, and investment potential with Gemini AI.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-md pt-sm">
+            <Button
+              onClick={handleAnalyze}
+              className="bg-primary-container text-on-primary-container font-label-md text-label-md py-4 px-xl rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md h-auto"
+            >
+              Analyze Market
+              <span className="material-symbols-outlined">trending_up</span>
+            </Button>
+          </div>
+        </motion.section>
 
-        <motion.div 
+        {/* Image Reference Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="py-lg"
+        >
+          <div className="relative rounded-2xl overflow-hidden tonal-card p-2">
+            <div className="aspect-[2.19/1] w-full rounded-xl overflow-hidden bg-surface-container">
+              {/* <img
+                alt="Platform UI Overview"
+                className="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8cCIGzjFWc5PGVF-CXBoq1sAoVE9xwjxhy0XSzWrVXexLKA011vLhkW1bSv_WQ6ibDVgZI-CbJTSOF2Q1QSmfDpLJHEqZs7gMpewUkkIXgQoFIjAW4n_EGcrAWUTj0ARtLArteoALFO-QPz-TzKPfZgoLeJaYYpEXp5mtGrhToq35NxZCb73OniGhz1Iz75SG_Pzqjwh0FApxQ3brcipihBEnwvPE9ln8hWL_hZfXmBrSQPnmO8LjYFTREfb84j9_EbGUDRZF-Go"
+              /> */}
+            </div>
+            <div className="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md p-md rounded-xl border border-outline-variant">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
+                  <span className="material-symbols-outlined">query_stats</span>
+                </div>
+                <div>
+                  <p className="text-label-md font-label-md text-on-surface">Live Market Feed</p>
+                  <p className="text-label-sm font-label-sm text-on-surface-variant">
+                    Gemini AI is processing 42 new listings...
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Bento Features Grid */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="py-lg grid grid-cols-1 gap-md"
+        >
+          <h3 className="text-headline-md font-headline-md text-on-surface font-serif">
+            Core Intelligence
+          </h3>
+          <div className="grid grid-cols-2 gap-md">
+            {/* Market Trends */}
+            <div className="tonal-card p-md rounded-2xl flex flex-col gap-sm hover:active-glow transition-shadow duration-300">
+              <span className="material-symbols-outlined text-primary">analytics</span>
+              <p className="text-label-md font-label-md">Market Trends</p>
+              <p className="text-label-sm font-label-sm text-on-surface-variant">Real-time velocity tracking.</p>
+            </div>
+            {/* Pricing Insights */}
+            <div className="tonal-card p-md rounded-2xl flex flex-col gap-sm hover:active-glow transition-shadow duration-300">
+              <span className="material-symbols-outlined text-primary">payments</span>
+              <p className="text-label-md font-label-md">Pricing Insights</p>
+              <p className="text-label-sm font-label-sm text-on-surface-variant">AI-driven valuation models.</p>
+            </div>
+          </div>
+
+          {/* Neighborhoods (Full Width) */}
+          <div className="tonal-card p-md rounded-2xl flex items-center justify-between sage-accent hover:active-glow transition-shadow duration-300">
+            <div className="flex flex-col gap-xs">
+              <p className="text-label-md font-label-md">Neighborhoods</p>
+              <p className="text-label-sm font-label-sm text-on-surface-variant">Hyper-local growth analytics per block.</p>
+            </div>
+            <span className="material-symbols-outlined text-tertiary">location_city</span>
+          </div>
+
+          {/* AI Summaries (Full Width with emphasis) */}
+          <div className="bg-tertiary-container/30 border border-tertiary-container p-md rounded-2xl flex flex-col gap-sm">
+            <div className="flex items-center gap-2 text-tertiary">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+              <p className="text-label-md font-label-md">AI Summaries</p>
+            </div>
+            <p className="text-body-md font-body-md text-on-tertiary-container italic">
+              &ldquo;This zip code is experiencing a 14% uptick in investor interest due to the upcoming tech hub completion.&rdquo;
+            </p>
+          </div>
+        </motion.section>
+
+        {/* CTA / Footer Branding */}
+        <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="pt-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-slate-500 dark:text-slate-400"
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="py-xl mb-12 text-center flex flex-col items-center gap-md"
         >
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-indigo-500 text-2xl">📈</div>
-            <span className="font-medium">Market Trends</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-blue-500 text-2xl">💰</div>
-            <span className="font-medium">Pricing Insights</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-emerald-500 text-2xl">🏙️</div>
-            <span className="font-medium">Neighborhoods</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-purple-500 text-2xl">🤖</div>
-            <span className="font-medium">AI Summaries</span>
-          </div>
-        </motion.div>
-      </motion.div>
+          <div className="h-px w-24 bg-outline-variant" />
+          <p className="text-headline-lg font-headline-lg italic text-primary font-serif">
+            Trust the Data. Own the Future.
+          </p>
+          <p className="text-label-md font-label-md text-on-surface-variant">
+            © 2024 Estately AI. All rights reserved.
+          </p>
+        </motion.section>
+      </div>
     </div>
   );
 }

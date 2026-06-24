@@ -33,6 +33,8 @@ from app.models.report import Report        # noqa: F401
 from app.models.saved_location import SavedLocation  # noqa: F401
 from app.models.watchlist import WatchlistEntry      # noqa: F401
 from app.models.aggregated_data import AggregatedMarketData  # noqa: F401
+from app.models.chat import AgentChat, ChatMessage   # noqa: F401
+from app.models.insight import StoredInsight         # noqa: F401
 # --------------------------------------------------------------------------
 
 # Alembic Config object — gives access to values in alembic.ini

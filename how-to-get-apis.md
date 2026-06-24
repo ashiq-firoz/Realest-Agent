@@ -69,3 +69,10 @@ For "Continue with Google" sign-in:
    credentials (Web application).
 2. Add `http://localhost:3000/api/auth/callback/google` as an authorized redirect URI.
 3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in your `.env`.
+
+
+
+## For MCP
+
+- first go to rapid api : https://rapidapi.com/apidojo/api/realty-in-au/  get the key in the playground
+

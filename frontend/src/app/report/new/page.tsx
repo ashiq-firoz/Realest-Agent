@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Building2, Loader2, AlertCircle } from "lucide-react";
 import { LocationSearch } from "@/components/location-search";
 import { Button } from "@/components/ui/button";
 import { apiPost } from "@/lib/api-client";
@@ -37,23 +36,23 @@ export default function NewReportPage() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center min-h-[80vh] bg-slate-50 dark:bg-slate-950 px-4">
-      <div className="w-full max-w-xl space-y-8">
-        <div className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-            <Building2 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+    <div className="flex-1 flex flex-col items-center justify-center min-h-[80vh] bg-background px-container-margin">
+      <div className="w-full max-w-xl space-y-lg">
+        <div className="text-center space-y-sm">
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-primary-container/30 flex items-center justify-center">
+            <span className="material-symbols-outlined text-primary text-3xl">query_stats</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-headline-lg font-headline-lg font-serif text-on-surface">
             Generate Intelligence Report
           </h1>
-          <p className="text-slate-500 dark:text-slate-400">
+          <p className="text-body-md font-body-md text-on-surface-variant max-w-md mx-auto">
             Search for an Australian location to uncover deep market insights, demographics, and AI-driven intelligence.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <div className="tonal-card p-lg rounded-2xl space-y-lg">
+          <div className="space-y-xs">
+            <label className="text-label-sm font-label-sm text-on-surface-variant ml-xs">
               Location
             </label>
             <LocationSearch 
@@ -64,8 +63,8 @@ export default function NewReportPage() {
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 rounded-lg p-3 border border-red-200 dark:border-red-900">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <div className="flex items-center gap-2 text-label-sm font-label-sm text-error bg-error-container/30 rounded-xl p-md border border-error/20">
+              <span className="material-symbols-outlined text-[18px]">error</span>
               {error}
             </div>
           )}
@@ -73,15 +72,18 @@ export default function NewReportPage() {
           <Button
             onClick={handleGenerate}
             disabled={!selectedLocation || isGenerating}
-            className="w-full h-12 text-base font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition-all"
+            className="w-full py-4 text-label-md font-label-md bg-primary-container text-on-primary-container hover:opacity-90 active:scale-95 transition-all rounded-xl shadow-md h-auto"
           >
             {isGenerating ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                <span className="material-symbols-outlined text-[18px] animate-spin mr-2">progress_activity</span>
                 Analyzing market data...
               </>
             ) : (
-              "Generate Report"
+              <>
+                Generate Report
+                <span className="material-symbols-outlined text-[18px] ml-2">trending_up</span>
+              </>
             )}
           </Button>
         </div>

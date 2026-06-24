@@ -5,9 +5,6 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Loader2, Mail, Lock, User, AlertCircle, Check } from "lucide-react";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 
@@ -80,63 +77,71 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-indigo-50/30 to-slate-100 dark:from-slate-950 dark:via-indigo-950/20 dark:to-slate-950 px-4">
-      <div className="absolute top-[-10%] left-[-5%] w-[30%] h-[30%] rounded-full bg-indigo-500/10 blur-[100px] pointer-events-none" />
+    <div className="flex min-h-screen items-center justify-center bg-background px-container-margin overflow-x-hidden">
+      <div className="grain-overlay" />
 
-      <Card className="w-full max-w-md border-slate-200/80 dark:border-slate-800 shadow-2xl shadow-indigo-500/5 backdrop-blur-sm">
-        <CardHeader className="text-center space-y-4 pb-2">
-          <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-            <Building2 className="w-7 h-7 text-white" />
+      <div className="w-full max-w-md mx-auto py-xl flex flex-col items-center">
+        {/* Logo Area */}
+        <div className="mb-xl text-center space-y-sm">
+          <div className="flex items-center justify-center gap-xs text-primary">
+            <span className="material-symbols-outlined text-headline-md" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+            <span className="font-headline-md text-headline-md font-bold font-serif tracking-tight">Estately AI</span>
           </div>
-          <div>
-            <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Create your account
-            </CardTitle>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Start generating real estate intelligence
-            </p>
-          </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="space-y-6 pt-4">
-          <form onSubmit={handleRegister} className="space-y-4">
+        {/* Visual Header */}
+        <div className="w-full mb-lg relative overflow-hidden rounded-xl h-40 login-card">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+          // style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6ImEpoxksMHsWbzL8Ma-sra_zAJP6rMvn49wAVM7YF5lxdFT5uTp17mUzCafD_9Rtq6oTMwmarjwy7gUg5zJtEf1y7Y-qpLbRt1V6v41X72NjdX3cDb7mDFxnt8t9sRNGQrz_6ldgnaAeTL1moxPlugsqHCPj88wp7Mcw3GQme5gmPQYX27dPyVejGvkCEe6rnuuCHcfd6Ntnnilp4N1bjAIJrPBPt15Rm7u1uPnubV-lDnn3N3cxJXBjv1P_ca-S39M8PuURTic')" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+          <div className="absolute bottom-md left-md right-md">
+            <h1 className="font-headline-lg-mobile text-headline-lg-mobile font-serif text-on-surface">Create your account</h1>
+            <p className="font-body-md text-body-md text-on-surface-variant">Start generating real estate intelligence</p>
+          </div>
+        </div>
+
+        {/* Register Form Container */}
+        <div className="w-full bg-surface-container-low rounded-xl p-lg login-card space-y-lg">
+          <form onSubmit={handleRegister} className="space-y-md">
             {errors.length > 0 && (
-              <div className="space-y-1 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 rounded-lg p-3 border border-red-200 dark:border-red-900">
+              <div className="space-y-1 text-label-sm font-label-sm text-error bg-error-container/30 rounded-xl p-md border border-error/20">
                 {errors.map((err, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span className="material-symbols-outlined text-[18px]">error</span>
                     {err}
                   </div>
                 ))}
               </div>
             )}
 
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-slate-700 dark:text-slate-300">Name</label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <Input id="name" type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required className="pl-10 h-11" />
-              </div>
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-xs" htmlFor="name">Name</label>
+              <input
+                className="w-full bg-surface-container-highest border-none rounded-xl px-lg py-md font-body-md text-body-md placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all outline-none"
+                id="name" type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required
+              />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required className="pl-10 h-11" />
-              </div>
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-xs" htmlFor="email">Email</label>
+              <input
+                className="w-full bg-surface-container-highest border-none rounded-xl px-lg py-md font-body-md text-body-md placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all outline-none"
+                id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required
+              />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <Input id="password" type="password" placeholder="Min. 8 characters" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} className="pl-10 h-11" />
-              </div>
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-xs" htmlFor="password">Password</label>
+              <input
+                className="w-full bg-surface-container-highest border-none rounded-xl px-lg py-md font-body-md text-body-md placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all outline-none"
+                id="password" type="password" placeholder="Min. 8 characters" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8}
+              />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Choose your mode</label>
+            <div className="space-y-xs">
+              <label className="font-label-sm text-label-sm text-on-surface-variant ml-xs">Choose your mode</label>
               <div className="grid grid-cols-2 gap-3">
                 {([
                   { id: "regular", title: "Regular", blurb: "Reports, dashboard & exports" },
@@ -149,36 +154,40 @@ export default function RegisterPage() {
                       key={opt.id}
                       onClick={() => setTier(opt.id)}
                       aria-pressed={active}
-                      className={`text-left rounded-xl border p-3 transition-all ${
-                        active
-                          ? "border-indigo-500 ring-2 ring-indigo-500/30 bg-indigo-50 dark:bg-indigo-950/30"
-                          : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-                      }`}
+                      className={`text-left rounded-xl border p-3 transition-all ${active
+                          ? "border-primary ring-2 ring-primary/30 bg-primary-container/20"
+                          : "border-outline-variant hover:border-outline"
+                        }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-slate-900 dark:text-white">{opt.title}</span>
-                        {active && <Check className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />}
+                        <span className="font-label-md text-label-md text-on-surface">{opt.title}</span>
+                        {active && <span className="material-symbols-outlined text-[18px] text-primary">check</span>}
                       </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{opt.blurb}</p>
+                      <p className="text-label-sm font-label-sm text-on-surface-variant mt-1">{opt.blurb}</p>
                     </button>
                   );
                 })}
               </div>
-              <p className="text-xs text-slate-400">No payment required — switch modes anytime.</p>
+              <p className="text-label-sm font-label-sm text-on-surface-variant/60 ml-xs">No payment required — switch modes anytime.</p>
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all">
-              {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-primary-container text-on-primary-container py-md rounded-xl font-label-md text-label-md font-bold shadow-sm hover:opacity-90 active:scale-95 duration-100 transition-all h-auto"
+            >
+              {isLoading && <span className="material-symbols-outlined text-[18px] animate-spin mr-2">progress_activity</span>}
               Create account
             </Button>
           </form>
+        </div>
 
-          <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-            Already have an account?{" "}
-            <Link href="/login" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Sign in</Link>
-          </p>
-        </CardContent>
-      </Card>
+        {/* Footer Link */}
+        <p className="mt-xl font-body-md text-body-md text-on-surface-variant">
+          Already have an account?{" "}
+          <Link href="/login" className="text-primary font-bold hover:underline">Sign in</Link>
+        </p>
+      </div>
     </div>
   );
 }

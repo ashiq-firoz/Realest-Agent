@@ -6,15 +6,15 @@ WORKDIR /build
 # Install system build dependencies required by WeasyPrint and other packages.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     # WeasyPrint runtime dependencies
-    libpango-1.0-0 \
-    libpangoft2-1.0-0 \
-    libpangocairo-1.0-0 \
-    libgdk-pixbuf-2.0-0 \
-    libffi-dev \
-    libcairo2 \
-    shared-mime-info \
+    # libpango-1.0-0 \
+    # libpangoft2-1.0-0 \
+    # libpangocairo-1.0-0 \
+    # libgdk-pixbuf-2.0-0 \
+    # libffi-dev \
+    # libcairo2 \
+    # shared-mime-info \
     # Required for Pillow / image handling used by WeasyPrint
-    libjpeg-dev \
+    # libjpeg-dev \
     # Compiler tools needed to build some Python packages
     gcc \
     g++ \
