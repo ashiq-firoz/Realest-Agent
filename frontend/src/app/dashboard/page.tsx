@@ -6,6 +6,7 @@ import { SavedLocations } from "@/components/dashboard/saved-locations";
 import { WatchlistPanel } from "@/components/dashboard/watchlist-panel";
 import { InvestmentAnalytics } from "@/components/dashboard/investment-analytics";
 import { DeleteReportButton } from "@/components/dashboard/delete-report-button";
+import { AskAgentButton } from "@/components/dashboard/ask-agent-button";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -29,22 +30,25 @@ export default async function DashboardPage() {
             View your recently generated real estate intelligence reports.
           </p>
         </div>
-        <Link href="/report/new">
-          <button className="bg-primary text-on-primary font-label-md text-label-md py-3 px-lg rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md">
-            <span className="material-symbols-outlined text-[18px]">search</span>
-            New Analysis
-          </button>
-        </Link>
+        <div className="flex items-center gap-3">
+          <AskAgentButton />
+          <Link href="/report/new">
+            <button className="bg-primary text-on-primary font-label-md text-label-md py-3 px-lg rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-md">
+              <span className="material-symbols-outlined text-[18px]">search</span>
+              New Analysis
+            </button>
+          </Link>
+        </div>
       </section>
 
       {/* Featured Assets */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-md">
         <div className="relative group overflow-hidden rounded-xl h-48 card-shadow bg-surface-container">
-          <img
+          {/* <img
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBQ3GLKB5DT97VnsQ9PVRVFS_fM6oTF41VoCVHgZIXJw0aLTnZMOIwecjuOgu2E78ix2ZCAkj67fn2ujaPTB3GPxCsNqeNiyFwVRECBK9_dsHoUOOTOY2yS1MTb5d-wD__V2DLED9MY7FxneR4HEhsEVQCw2Z6j5TeFdRXKG9hDUy8xNwyLI8eIHKI4rcn_tmyNSLh58_6nzwiKFTsrGCLFgAUsjE6LwKoq_37RqJoWap9AkSuxb99R2i6DctUrwmz_2yjD-6zyz8"
             alt="Market Volatility Index"
-          />
+          /> */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-4 left-4 text-white">
             <span className="font-label-sm text-label-sm uppercase tracking-wider opacity-80">Latest Analysis</span>
@@ -52,11 +56,11 @@ export default async function DashboardPage() {
           </div>
         </div>
         <div className="relative group overflow-hidden rounded-xl h-48 card-shadow bg-surface-container">
-          <img
+          {/* <img
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJys1ZTjrUmbboGXH9O5Wr3KiH6sc7SlpRUExvehXxuYk0UA2TRexsfNeMXUrkKAslijkR5ELTX8svzgTyUuaQPgdXZQ6icHm_2lPqhPeXohN6pvXsSr5dUKpGdkK-JmazINL6afQemSwsyCNccuhvLt_G9zKOnxHYkKla1TUfctcNgipZp2L5KuaC9oBKPL77PssTMNLXyQ9mQ9EufqWgkj6IYJKWHHYzvhXL2dtDau8s9xScmBjPVNM7PHcj3uZL-s0_2kF_xY4"
             alt="Yield Projections Q4"
-          />
+          /> */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-4 left-4 text-white">
             <span className="font-label-sm text-label-sm uppercase tracking-wider opacity-80">Portfolio Review</span>

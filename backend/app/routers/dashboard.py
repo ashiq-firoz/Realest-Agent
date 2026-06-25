@@ -293,21 +293,66 @@ async def get_analytics(
     return await _get_analytics_entries(db, current_user)
 
 
+from app.models.insight import StoredInsight
+
 @router.get("/analytics/insights")
 async def get_analytics_insights(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_pro),
 ):
     """
-    Return an AI-generated text insight comparing the user's saved locations.
+    Return the cached AI-generated text insight comparing the user's saved locations.
+    """
+    result = await db.execute(
+        select(StoredInsight)
+        .where(
+            StoredInsight.insight_type == "dashboard_analytics",
+            StoredInsight.reference_id == current_user.id
+        )
+    )
+    insight = result.scalar_one_or_none()
+    
+    if insight:
+        return {"insight": insight.content, "updated_at": insight.updated_at}
+    else:
+        return {"insight": None, "updated_at": None}
+
+@router.post("/analytics/insights/reanalyze")
+async def reanalyze_analytics_insights(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_pro),
+):
+    """
+    Generate a fresh AI insight and store it in the database.
     """
     entries = await _get_analytics_entries(db, current_user)
     
     from app.services.gemini_service import GeminiService
     gemini_service = GeminiService()
     
-    # Convert entries to dicts for the prompt
     data_dicts = [e.model_dump() for e in entries]
-    insight = await gemini_service.generate_investment_insights(data_dicts)
+    new_insight_text = await gemini_service.generate_investment_insights(data_dicts)
     
-    return {"insight": insight}
+    result = await db.execute(
+        select(StoredInsight)
+        .where(
+            StoredInsight.insight_type == "dashboard_analytics",
+            StoredInsight.reference_id == current_user.id
+        )
+    )
+    insight = result.scalar_one_or_none()
+    
+    if insight:
+        insight.content = new_insight_text
+    else:
+        insight = StoredInsight(
+            insight_type="dashboard_analytics",
+            reference_id=current_user.id,
+            content=new_insight_text
+        )
+        db.add(insight)
+        
+    await db.commit()
+    await db.refresh(insight)
+    
+    return {"insight": insight.content, "updated_at": insight.updated_at}

@@ -42,6 +42,9 @@ function LoginContent() {
   };
 
   const handleGoogleLogin = () => {
+    // Clear any leftover signup tier so logging in never applies a stale choice;
+    // existing accounts keep their tier, and brand-new Google logins default to regular.
+    document.cookie = "signup_tier=; path=/; max-age=0; samesite=lax";
     signIn("google", { callbackUrl });
   };
 
@@ -53,8 +56,8 @@ function LoginContent() {
         {/* Logo Area */}
         <div className="mb-xl text-center space-y-sm">
           <div className="flex items-center justify-center gap-xs text-primary">
-            <span className="material-symbols-outlined text-headline-md" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
-            <span className="font-headline-md text-headline-md font-bold font-serif tracking-tight">Estately AI</span>
+            {/* <span className="material-symbols-outlined text-headline-md" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span> */}
+            <span className="font-headline-md text-headline-md font-bold font-serif tracking-tight">Novestate</span>
           </div>
         </div>
 
@@ -67,7 +70,7 @@ function LoginContent() {
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute bottom-md left-md right-md">
             <h1 className="font-headline-lg-mobile text-headline-lg-mobile font-serif text-on-surface">Welcome back</h1>
-            <p className="font-body-md text-body-md text-on-surface-variant">Sign in to Estately AI</p>
+            <p className="font-body-md text-body-md text-on-surface-variant">Sign in to Novestate</p>
           </div>
         </div>
 
@@ -168,7 +171,10 @@ function LoginContent() {
         {/* Footer Link */}
         <p className="mt-xl font-body-md text-body-md text-on-surface-variant">
           Don&apos;t have an account?{" "}
-          <Link className="text-primary font-bold hover:underline" href="/register">
+          <Link
+            className="text-primary font-bold hover:underline"
+            href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+          >
             Create one
           </Link>
         </p>
@@ -177,7 +183,7 @@ function LoginContent() {
         <div className="mt-xl p-md bg-tertiary-container/20 rounded-xl border-l-2 border-tertiary flex items-start gap-md max-w-[320px]">
           <span className="material-symbols-outlined text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>auto_fix_high</span>
           <p className="font-label-sm text-label-sm text-on-tertiary-container leading-relaxed">
-            Estately AI uses real-time market data to prioritize the homes that match your lifestyle perfectly.
+            Novestate uses real-time market data to prioritize the homes that match your lifestyle perfectly.
           </p>
         </div>
       </div>

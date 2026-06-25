@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file="../.env",
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     DOMAIN_API_KEY: Optional[str] = None
     # PropertyLens provides free comparable listings; mock fallback if unset.
     PROPERTYLENS_API_KEY: Optional[str] = None
+    
+    # --- Realty in AU RapidAPI ---
+    RAPIDAPI_KEY: str
+    REALTY_AU_HOST: str = "realty-in-au.p.rapidapi.com"
     # Keyless free data sources (overridable via env if needed).
     ABS_API_BASE: str = "https://data.api.abs.gov.au"
     OVERPASS_URL: str = "https://overpass-api.de/api/interpreter"

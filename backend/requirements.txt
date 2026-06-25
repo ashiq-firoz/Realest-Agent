@@ -9,8 +9,11 @@ python-jose[cryptography]
 passlib[bcrypt]
 httpx==0.27.*
 redis[asyncio]
-google-generativeai==0.5.*
+google-generativeai>=0.8.3,<0.9
 weasyprint==62.*
 hypothesis
 pytest
 pytest-asyncio
+pdfplumber
+python-docx
+markdown

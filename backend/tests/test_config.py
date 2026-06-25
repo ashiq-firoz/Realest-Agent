@@ -13,6 +13,7 @@ os.environ.setdefault("POSTGRES_PASSWORD", "test")
 os.environ.setdefault("REDIS_URL", "redis://localhost:6379/0")
 os.environ.setdefault("GEMINI_API_KEY", "test")
 os.environ.setdefault("DOMAIN_API_KEY", "test")
+os.environ.setdefault("RAPIDAPI_KEY", "test")
 os.environ.setdefault("NEXTAUTH_SECRET", "test_secret_min_32_characters_long_abc")
 
 from hypothesis import given
@@ -33,6 +34,7 @@ REQUIRED_VARS = [
     "POSTGRES_PASSWORD",
     "REDIS_URL",
     "GEMINI_API_KEY",
+    "RAPIDAPI_KEY",
     "NEXTAUTH_SECRET",
 ]
 
@@ -45,6 +47,7 @@ VALID_ENV = {
     "POSTGRES_PASSWORD": "test_password",
     "REDIS_URL": "redis://localhost:6379/0",
     "GEMINI_API_KEY": "valid_key",
+    "RAPIDAPI_KEY": "valid_key",
     "NEXTAUTH_SECRET": "test_secret_min_32_characters_long_abc",
 }
 
@@ -64,7 +67,9 @@ def test_p23_environment_variable_startup_validation(missing_vars):
     
     with patch.dict(os.environ, mock_env, clear=True):
         try:
-            Settings()
+            # _env_file=None so the test validates purely against the patched
+            # environment and is not satisfied by a local .env file.
+            Settings(_env_file=None)
             assert False, f"Expected ValidationError when missing {missing_vars}"
         except ValidationError as e:
             error_msg = str(e).lower()

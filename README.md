@@ -1,4 +1,4 @@
-# Estately AI
+# Novestate
 
 - (This app have two modes - traditional dashboard and Full Agent Mode. In Full Agent Mode it act as a real estate agent and provide reports to clients.)
 - In full agent mode its just a chat interface where user can ask for details reports any query.

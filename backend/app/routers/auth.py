@@ -41,7 +41,10 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 class GoogleTokenRequest(BaseModel):
-    id_token: str
+    # The Google OAuth access token (used as a Bearer token against userinfo).
+    access_token: str
+    # Mode chosen at signup; applied only when creating a brand-new user.
+    tier: str = "regular"
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
@@ -98,12 +101,12 @@ async def google_auth(
     body: GoogleTokenRequest,
     db: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
-    """Exchange Google OAuth id_token for app JWT. Upserts user record."""
+    """Exchange a Google OAuth access token for an app JWT. Upserts the user record."""
     async with httpx.AsyncClient() as client:
         try:
             resp = await client.get(
                 GOOGLE_USERINFO_URL,
-                headers={"Authorization": f"Bearer {body.id_token}"},
+                headers={"Authorization": f"Bearer {body.access_token}"},
             )
             resp.raise_for_status()
             google_user = resp.json()
@@ -125,12 +128,13 @@ async def google_auth(
     user = result.scalar_one_or_none()
 
     if not user:
+        chosen_tier = body.tier if body.tier in ("regular", "pro") else "regular"
         user = User(
             email=email,
             name=google_user.get("name"),
             image=google_user.get("picture"),
             provider="google",
-            tier="regular",
+            tier=chosen_tier,
         )
         db.add(user)
         await db.flush()

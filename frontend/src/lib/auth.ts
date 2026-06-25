@@ -1,6 +1,7 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
+import { cookies } from "next/headers";
 import "next-auth/jwt";
 
 // ---------------------------------------------------------------------------
@@ -89,10 +90,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // On first sign-in `user` is populated; on subsequent calls it is
     // undefined, so we carry forward the stored values.
     // ------------------------------------------------------------------
-    async jwt({ token, user }) {
-      if (user) {
-        // `user.access_token` is the FastAPI-issued JWT
-        // (NextAuth typings don't know about it natively, so we cast to any or just read it)
+    async jwt({ token, user, account }) {
+      // Google sign-in/up: exchange the Google access token for a backend JWT.
+      // The chosen tier (set as a cookie on the register page before redirect) is
+      // applied only when the backend creates a brand-new user.
+      if (account?.provider === "google" && (account as any).access_token) {
+        try {
+          const backendUrl = process.env.BACKEND_URL ?? "http://localhost:8000";
+          let tier = "regular";
+          try {
+            const c = (await cookies()).get("signup_tier")?.value;
+            if (c === "pro" || c === "regular") tier = c;
+          } catch {
+            /* cookies() unavailable outside a request scope — ignore */
+          }
+          const res = await fetch(`${backendUrl}/auth/google`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ access_token: (account as any).access_token, tier }),
+          });
+          if (res.ok) {
+            const data = await res.json(); // { access_token, tier }
+            token.backendToken = data.access_token;
+            token.tier = data.tier;
+          }
+        } catch {
+          /* network error — leave token without backendToken */
+        }
+      } else if (user) {
+        // Credentials sign-in: the backend JWT + tier come back on the user object.
         token.backendToken = (user as any).access_token || user.token;
         token.tier = user.tier;
         token.id = user.id;

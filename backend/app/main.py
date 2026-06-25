@@ -125,13 +125,14 @@ async def health():
 # inside a try/except so the app still starts during development.
 
 def _register_routers() -> None:
-    from app.routers import auth, locations, reports, dashboard, watchlist  # noqa: PLC0415
+    from app.routers import auth, locations, reports, dashboard, watchlist, agent  # noqa: PLC0415
 
     app.include_router(auth.router, prefix="/auth", tags=["auth"])
     app.include_router(locations.router, prefix="/locations", tags=["locations"])
     app.include_router(reports.router, prefix="/reports", tags=["reports"])
     app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
     app.include_router(watchlist.router, prefix="/watchlist", tags=["watchlist"])
+    app.include_router(agent.router, prefix="/agent", tags=["agent"])
 
 
 try:

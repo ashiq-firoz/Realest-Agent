@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Loader2, Sparkles } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from "recharts";
-import { apiGet } from "@/lib/api-client";
+import { apiGet, apiPost } from "@/lib/api-client";
 import { useSession } from "next-auth/react";
 import type { InvestmentAnalyticsEntry } from "@/types/api";
 
@@ -29,6 +29,19 @@ export function InvestmentAnalytics() {
       setIsLoading(false);
     }
   }, [session]);
+
+  const handleReanalyze = async () => {
+    if (!session) return;
+    setIsLoading(true);
+    try {
+      const data = await apiPost<{insight: string}, Record<string, never>>("/dashboard/analytics/insights/reanalyze", {}, session);
+      setInsight(data.insight);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchAnalytics();
@@ -69,10 +82,28 @@ export function InvestmentAnalytics() {
               <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800/30">
                 <div className="flex items-start gap-3">
                   <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
-                  <div className="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-wrap">
+                  <div className="text-sm text-slate-800 dark:text-slate-200 whitespace-pre-wrap flex-1">
                     {insight}
                   </div>
+                  <button 
+                    onClick={handleReanalyze}
+                    className="flex items-center gap-1 text-xs bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 px-3 py-1.5 rounded-md hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-colors shrink-0"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">refresh</span>
+                    Re-Analyze
+                  </button>
                 </div>
+              </div>
+            )}
+            {!insight && !isLoading && analytics.length > 0 && (
+              <div className="flex justify-end">
+                  <button 
+                    onClick={handleReanalyze}
+                    className="flex items-center gap-1 text-xs bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 px-3 py-1.5 rounded-md hover:bg-indigo-200 dark:hover:bg-indigo-700 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
+                    Generate Insights
+                  </button>
               </div>
             )}
             
