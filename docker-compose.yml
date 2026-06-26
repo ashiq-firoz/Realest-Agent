@@ -43,10 +43,14 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        # Inlined into the client bundle at build time (browser → published port).
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8000}
     env_file: .env
     environment:
+      # Server-side (RSC/SSR/NextAuth) calls use the internal docker network host.
       BACKEND_URL: http://backend:8000
-      NEXT_PUBLIC_BACKEND_URL: http://localhost:8000
+      NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8000}
     ports:
       - "3000:3000"
     depends_on:

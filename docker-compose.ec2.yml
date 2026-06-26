@@ -1,0 +1,79 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Single-host EC2 deployment.
+#
+# 1. Build the images (bakes the EC2 public IP into the frontend bundle):
+#
+#      EC2_IP=<your-ec2-public-ip>
+#      docker build -t realestate-backend:latest ./backend
+#      docker build --build-arg NEXT_PUBLIC_BACKEND_URL=http://$EC2_IP:8000 \
+#                   -t realestate-frontend:latest ./frontend
+#
+# 2. Put this file + a .env (see deploy notes) on the instance, then:
+#
+#      docker compose -f docker-compose.ec2.yml up -d
+#
+# 3. EC2 security group must allow inbound TCP 3000 (frontend) and 8000 (backend).
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+
+  backend:
+    image: realestate-backend:latest
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"          # exposed publicly: the browser calls http://<EC2_IP>:8000
+    command: >
+      sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2"
+    networks:
+      - internal
+
+  frontend:
+    image: realestate-frontend:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Server-side (RSC/SSR/NextAuth) calls stay on the internal docker network.
+      # The browser-facing URL is already baked into the image at build time.
+      BACKEND_URL: http://backend:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  internal:
+    driver: bridge

@@ -15,6 +15,14 @@ COPY . .
 # Ensure public dir exists (some projects may not have one)
 RUN mkdir -p public
 
+# NEXT_PUBLIC_* env vars are inlined into the client bundle at BUILD time, so the
+# backend URL the browser calls must be provided as a build arg here. Setting it
+# only at container runtime (docker-compose `environment:`) is too late and the
+# client falls back to the hardcoded default. Override per environment via
+# `--build-arg NEXT_PUBLIC_BACKEND_URL=...` or the compose `build.args`.
+ARG NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
 # Build the Next.js application (standalone output)
 RUN npm run build
 
